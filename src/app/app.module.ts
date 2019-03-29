@@ -1,18 +1,91 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { NewAuth } from './auth.service';
+import { NgxWebstorageModule } from 'ngx-webstorage'
+
+import {
+  SocialLoginModule,
+  AuthServiceConfig,
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+  AuthService,
+} from "angular-6-social-login-v2";
+
+import { SigninComponent } from './signin/signin.component';
+import { AdminComponent } from './admin/admin.component';
+import { RouterModule } from '../../node_modules/@angular/router';
+import { AuthGuard } from './auth.guard' 
+
+
+
+
+const config =new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider('777759282535-5r73inv3ci700ccaq131biedj7ni6vgf.apps.googleusercontent.com'),
+  },
+  {
+    id:FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider('575590992953748')
+  }
+ 
+
+]);
+
+
+
+export function provideConfig() {
+
+  return config;
+
+}
+
+
+
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SigninComponent,
+    AdminComponent,
+ 
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    SocialLoginModule,
+    AppRoutingModule,
+    NgxWebstorageModule,
+    RouterModule.forRoot([
+      {
+        path:'',
+        component: SigninComponent
+      },
+      {
+        path:'admin',
+        component: AdminComponent,
+        canActivate: [AuthGuard]
+      },
+    
+     
+
+    ])
+    
   ],
-  providers: [],
+  providers: [
+    SigninComponent,
+    AuthService,
+    NewAuth, 
+    AuthGuard,
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
