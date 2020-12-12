@@ -25,11 +25,11 @@ import { AuthGuard } from './auth.guard'
 const config =new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider('777759282535-5r73inv3ci700ccaq131biedj7ni6vgf.apps.googleusercontent.com'),
+    provider: new GoogleLoginProvider(''),
   },
   {
     id:FacebookLoginProvider.PROVIDER_ID,
-    provider: new FacebookLoginProvider('575590992953748')
+    provider: new FacebookLoginProvider('')
   }
  
 
